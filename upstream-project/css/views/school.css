@@ -1,0 +1,28 @@
+/* School: next activities from the configured school calendars. */
+.school { height: 100%; display: flex; flex-direction: column; }
+.sc-head { display: flex; align-items: flex-end; margin-bottom: 18px; flex: none; }
+.sc-title-block h1 { font-size: 64px; line-height: .95; }
+.sc-count { margin-left: auto; color: var(--mute); }
+
+.sc-list { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.sc-row {
+  display: flex; align-items: center; gap: 20px;
+  background: var(--card); border-radius: var(--r); padding: 14px 20px;
+}
+.sc-when { flex: none; width: 118px; display: flex; flex-direction: column; line-height: 1.1; }
+.sc-when b {
+  font-size: var(--fs-label); font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.sc-when span { font-size: var(--fs-m); color: var(--mute); }
+.sc-title { flex: 1; min-width: 0; font-size: var(--fs-l); overflow-wrap: anywhere; }
+.sc-tag { flex: none; color: var(--mute); }
+.sc-empty {
+  margin: auto; text-align: center; font-size: var(--fs-l); color: var(--mute);
+  line-height: 1.25;
+}
+
+/* Today / 3 Day / Week / Month tabs, mirroring the Calendar section. */
+.sc-head .seg { margin-left: auto; }
+.sc-cols--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sc-none { margin-bottom: 8px; }

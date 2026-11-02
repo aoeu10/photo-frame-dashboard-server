@@ -1,0 +1,13 @@
+{
+  "license": "Unsplash License (not MIT)",
+  "licenseUrl": "https://unsplash.com/license",
+  "usage": "Local copies resized for the fictional screenshot album. Photographer credits remain authoritative; demo album sharing labels are fictional.",
+  "photos": [
+    { "file": "snoqualmie.jpg", "author": "Dave Hoefler", "source": "https://unsplash.com/photos/forest-lake-near-on-mountain-4Pzn4SBYKIg", "download": "https://images.unsplash.com/photo-1524435497396-7bc897fa8d97?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Snoqualmie, Washington" },
+    { "file": "forest-road.jpg", "author": "m c", "source": "https://unsplash.com/photos/misty-mountain-forest-with-a-winding-road-cEjAmTnarso", "download": "https://images.unsplash.com/photo-1758998076258-9900be6a51f0?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Villgratental, Austria" },
+    { "file": "bamboo-forest.jpg", "author": "Fenghua", "source": "https://unsplash.com/photos/lush-green-forest-with-bamboo-in-the-foreground-RA8xFmOBN8I", "download": "https://images.unsplash.com/photo-1763994684787-b9090f4362d2?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Chongqing, China" },
+    { "file": "snowy-peaks.jpg", "author": "Antony Sklivagkos", "source": "https://unsplash.com/photos/mountain-peak-under-blue-sky-iTYShprNeRE", "download": "https://images.unsplash.com/photo-1525784451128-d1488f52f03e?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Kalavrita, Greece" },
+    { "file": "dolomites.jpg", "author": "Jacek Dylag", "source": "https://unsplash.com/photos/photo-of-gray-mountain-peak-fdPoQ3kbePU", "download": "https://images.unsplash.com/photo-1520357750302-03cee3ee2e6a?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Val Gardena, Italy" },
+    { "file": "alpine-ranges.jpg", "author": "Fabrizio Conti", "source": "https://unsplash.com/photos/mountain-ranges-9XWYMuECV3s", "download": "https://images.unsplash.com/photo-1531149209156-122dcea6fdd2?fm=jpg&w=1600&h=1200&fit=max&q=85", "place": "Pizzo Tre Signori, Italy" }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "capturedAt": "2026-10-24T20:34:27.085Z",
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "deviceScaleFactor": 1
+  },
+  "sceneTime": "2026-10-24T13:28:31.061261-07:00",
+  "timezone": "America/Los_Angeles",
+  "weatherFetchedAt": "2026-10-24T13:28:31.944916-07:00",
+  "location": {
+    "name": "Seattle, Washington",
+    "lat": 47.6062,
+    "lon": -122.3321,
+    "zip": "98101"
+  },
+  "weatherLocationPreset": "weather-seattle.json",
+  "fixtureSha256": "1df48a47417ab157d706a9e92e42ccc47626bcc94f4b8f8c62004ddee02d227a",
+  "notes": "Fictional family and calendar. Real weather/radar for Seattle, Washington. Local credited Unsplash photos. No live StartOS configuration or printers used.",
+  "radarMetadata": {
+    "tileBase": "/api/radar/tile/",
+    "frames": [
+      {
+        "time": 1792866600,
+        "path": "30a27e8498e2",
+        "echo": true
+      },
+      {
+        "time": 1792867200,
+        "path": "f2d11e694ff4",
+        "echo": true
+      },
+      {
+        "time": 1792867800,
+        "path": "0541af007051",
+        "echo": true
+      },
+      {
+        "time": 1792868400,
+        "path": "1d4170dedced",
+        "echo": true
+      },
+      {
+        "time": 1792869000,
+        "path": "e826a7f9f3ad",
+        "echo": true
+      },
+      {
+        "time": 1792869600,
+        "path": "728d5f9a46d0",
+        "echo": true
+      },
+      {
+        "time": 1792870200,
+        "path": "d21203b32f2d",
+        "echo": true
+      },
+      {
+        "time": 1792870800,
+        "path": "9eff504d7ffa",
+        "echo": true
+      },
+      {
+        "time": 1792871400,
+        "path": "543ad063a053",
+        "echo": true
+      },
+      {
+        "time": 1792872000,
+        "path": "437ef9e1d9f1",
+        "echo": true
+      },
+      {
+        "time": 1792872600,
+        "path": "cdcb27a68572",
+        "echo": true
+      },
+      {
+        "time": 1792873200,
+        "path": "8c32ee6b9650",
+        "echo": true
+      },
+      {
+        "time": 1792873800,
+        "path": "0b1b25f96e8a",
+        "echo": true
+      }
+    ],
+    "generated": 1792873822,
+    "attribution": "RainViewer",
+    "attributionUrl": "https://www.rainviewer.com/"
+  },
+  "screenshots": [
+    {
+      "file": "frame-weather-seattle.png",
+      "description": "Seattle, Washington forecast and real regional precipitation overlay",
+      "bytes": 307245,
+      "sha256": "8a39c44206b28785e16fbf5240915c78ccf13500d988a07d1ff828154a5e7b01",
+      "view": "weather",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "11:30 AM",
+      "radarTile": "url(\"/api/radar/tile/30a27e8498e2/7/19/43\")"
+    },
+    {
+      "file": "frame-weather-seattle-local.png",
+      "description": "Seattle, Washington precipitation overlay zoomed to local geographic context",
+      "bytes": 367742,
+      "sha256": "0cdafc86a694c97eae16a7ebe8af9f720e4c0bfcaad521180baae057c692e70d",
+      "view": "weather",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "11:30 AM",
+      "radarTile": "url(\"/api/radar/tile/30a27e8498e2/7/19/43\")"
+    }
+  ]
+}

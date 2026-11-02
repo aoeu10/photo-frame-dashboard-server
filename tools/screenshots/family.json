@@ -1,0 +1,975 @@
+{
+  "description": "Fictional Boise household for documentation screenshots only. Never import into a live StartOS configuration.",
+  "timezone": "America/Boise",
+  "location": {
+    "name": "Boise, Idaho",
+    "lat": 43.615,
+    "lon": -116.2023,
+    "zip": "83702"
+  },
+  "members": [
+    {
+      "id": "dad",
+      "name": "Dad",
+      "color": "#2D5BFF",
+      "cards": [
+        "calendar",
+        "weather",
+        "photos",
+        "chores"
+      ]
+    },
+    {
+      "id": "mom",
+      "name": "Mom",
+      "color": "#C93675",
+      "cards": [
+        "calendar",
+        "weather",
+        "chores",
+        "photos"
+      ]
+    },
+    {
+      "id": "john",
+      "name": "John",
+      "age": 6,
+      "color": "#D88600",
+      "cards": [
+        "calendar",
+        "chores",
+        "photos"
+      ]
+    },
+    {
+      "id": "susan",
+      "name": "Susan",
+      "age": 2,
+      "color": "#168564",
+      "cards": [
+        "calendar",
+        "chores",
+        "photos"
+      ]
+    }
+  ],
+  "calendar": {
+    "today": [
+      {
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "title": "Family adventure day",
+        "allDay": true
+      },
+      {
+        "people": [
+          "dad"
+        ],
+        "start": "08:30",
+        "end": "09:15",
+        "title": "Greenbelt bike ride",
+        "location": "Boise River Greenbelt"
+      },
+      {
+        "people": [
+          "mom"
+        ],
+        "start": "09:00",
+        "end": "09:45",
+        "title": "Coffee with a friend",
+        "location": "Downtown Boise"
+      },
+      {
+        "people": [
+          "john"
+        ],
+        "start": "09:30",
+        "end": "10:15",
+        "title": "Swim lesson",
+        "location": "Community pool"
+      },
+      {
+        "people": [
+          "susan",
+          "mom"
+        ],
+        "start": "10:00",
+        "end": "10:45",
+        "title": "Toddler storytime",
+        "location": "Boise Public Library"
+      },
+      {
+        "people": [
+          "dad",
+          "john"
+        ],
+        "start": "12:45",
+        "end": "13:45",
+        "title": "Build a birdhouse",
+        "location": "Backyard"
+      },
+      {
+        "people": [
+          "mom"
+        ],
+        "start": "13:00",
+        "end": "13:40",
+        "title": "Plan next week's meals",
+        "location": "Home"
+      },
+      {
+        "people": [
+          "susan"
+        ],
+        "start": "12:30",
+        "end": "14:00",
+        "title": "Afternoon nap",
+        "location": "Home"
+      },
+      {
+        "people": [
+          "mom"
+        ],
+        "start": "14:15",
+        "end": "15:00",
+        "title": "Pick up groceries",
+        "location": "Boise Co-op"
+      },
+      {
+        "people": [
+          "dad"
+        ],
+        "start": "14:30",
+        "end": "15:15",
+        "title": "Pick up garden supplies",
+        "location": "Garden center"
+      },
+      {
+        "people": [
+          "susan"
+        ],
+        "start": "14:30",
+        "end": "15:00",
+        "title": "Blocks and coloring",
+        "location": "Home"
+      },
+      {
+        "people": [
+          "john"
+        ],
+        "start": "15:00",
+        "end": "16:00",
+        "title": "Soccer with friends",
+        "location": "Camel's Back Park"
+      },
+      {
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "start": "16:30",
+        "end": "17:30",
+        "title": "Nature walk together",
+        "location": "Kathryn Albertson Park"
+      },
+      {
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "start": "18:00",
+        "end": "18:45",
+        "title": "Family taco night",
+        "location": "Home"
+      },
+      {
+        "people": [
+          "susan"
+        ],
+        "start": "19:00",
+        "end": "19:20",
+        "title": "Bath and bedtime stories",
+        "location": "Home"
+      },
+      {
+        "people": [
+          "john",
+          "dad"
+        ],
+        "start": "19:30",
+        "end": "20:00",
+        "title": "Read a chapter together",
+        "location": "Home"
+      }
+    ],
+    "weekly": [
+      {
+        "days": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "people": [
+          "dad"
+        ],
+        "start": "09:00",
+        "end": "10:00",
+        "title": "Project planning",
+        "location": "Home office"
+      },
+      {
+        "days": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "people": [
+          "john"
+        ],
+        "start": "08:30",
+        "end": "14:45",
+        "title": "First grade",
+        "location": "Elementary school"
+      },
+      {
+        "days": [
+          0,
+          2,
+          4
+        ],
+        "people": [
+          "mom",
+          "susan"
+        ],
+        "start": "10:00",
+        "end": "11:00",
+        "title": "Toddler playgroup",
+        "location": "Community center"
+      },
+      {
+        "days": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "people": [
+          "susan"
+        ],
+        "start": "12:30",
+        "end": "14:00",
+        "title": "Afternoon nap",
+        "location": "Home"
+      },
+      {
+        "days": [
+          0,
+          3
+        ],
+        "people": [
+          "mom"
+        ],
+        "start": "13:00",
+        "end": "14:00",
+        "title": "Garden club",
+        "location": "Community garden"
+      },
+      {
+        "days": [
+          1,
+          3
+        ],
+        "people": [
+          "john"
+        ],
+        "start": "15:30",
+        "end": "16:30",
+        "title": "Soccer practice",
+        "location": "Camel's Back Park"
+      },
+      {
+        "days": [
+          2
+        ],
+        "people": [
+          "dad",
+          "john"
+        ],
+        "start": "15:30",
+        "end": "16:15",
+        "title": "Library book run",
+        "location": "Boise Public Library"
+      },
+      {
+        "days": [
+          4
+        ],
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "start": "18:00",
+        "end": "19:00",
+        "title": "Pizza and movie night",
+        "location": "Home"
+      },
+      {
+        "days": [
+          5
+        ],
+        "people": [
+          "john"
+        ],
+        "start": "09:30",
+        "end": "10:15",
+        "title": "Swim lesson",
+        "location": "Community pool"
+      },
+      {
+        "days": [
+          5
+        ],
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "start": "14:00",
+        "end": "16:00",
+        "title": "Foothills family walk",
+        "location": "Hulls Gulch Reserve"
+      },
+      {
+        "days": [
+          6
+        ],
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "start": "10:00",
+        "end": "11:30",
+        "title": "Pancakes and park",
+        "location": "Julia Davis Park"
+      },
+      {
+        "days": [
+          6
+        ],
+        "people": [
+          "mom"
+        ],
+        "start": "14:00",
+        "end": "15:00",
+        "title": "Book club",
+        "location": "Neighborhood cafe"
+      },
+      {
+        "days": [
+          6
+        ],
+        "people": [
+          "dad"
+        ],
+        "start": "15:00",
+        "end": "16:00",
+        "title": "Prep lunches for the week",
+        "location": "Home"
+      }
+    ],
+    "special": [
+      {
+        "day": 1,
+        "people": [
+          "john",
+          "dad"
+        ],
+        "start": "15:30",
+        "end": "16:30",
+        "title": "LEGO afternoon",
+        "location": "Home"
+      },
+      {
+        "day": 2,
+        "people": [
+          "mom"
+        ],
+        "start": "11:00",
+        "end": "11:45",
+        "title": "Coffee with Maya",
+        "location": "Downtown Boise"
+      },
+      {
+        "day": 3,
+        "people": [
+          "john"
+        ],
+        "title": "Bring a favorite book",
+        "allDay": true
+      },
+      {
+        "day": 5,
+        "people": [
+          "dad"
+        ],
+        "start": "14:00",
+        "end": "14:45",
+        "title": "Bike tune-up",
+        "location": "Local bike shop"
+      },
+      {
+        "day": 8,
+        "people": [
+          "susan",
+          "mom"
+        ],
+        "start": "10:00",
+        "end": "11:00",
+        "title": "Little artists playdate",
+        "location": "Community center"
+      },
+      {
+        "day": 12,
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "title": "Grandparents visit",
+        "allDay": true
+      },
+      {
+        "day": 17,
+        "people": [
+          "john"
+        ],
+        "start": "14:00",
+        "end": "16:00",
+        "title": "Birthday party",
+        "location": "Neighborhood park"
+      },
+      {
+        "day": -6,
+        "people": [
+          "dad",
+          "mom",
+          "john",
+          "susan"
+        ],
+        "title": "Forest picnic",
+        "allDay": true
+      }
+    ]
+  },
+  "chores": [
+    {
+      "id": "morning-dad-1",
+      "r": "morning",
+      "who": "dad",
+      "title": "Empty dishwasher",
+      "emoji": "\ud83c\udf7d\ufe0f",
+      "completed": true
+    },
+    {
+      "id": "morning-dad-2",
+      "r": "morning",
+      "who": "dad",
+      "title": "Water the garden",
+      "emoji": "\ud83c\udf31"
+    },
+    {
+      "id": "morning-mom-1",
+      "r": "morning",
+      "who": "mom",
+      "title": "Pack family snacks",
+      "emoji": "\ud83c\udf4e",
+      "completed": true
+    },
+    {
+      "id": "morning-mom-2",
+      "r": "morning",
+      "who": "mom",
+      "title": "Start the laundry",
+      "emoji": "\ud83e\uddfa",
+      "completed": true
+    },
+    {
+      "id": "morning-john-1",
+      "r": "morning",
+      "who": "john",
+      "title": "Make my bed",
+      "emoji": "\ud83d\udecf\ufe0f",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "morning-john-2",
+      "r": "morning",
+      "who": "john",
+      "title": "Brush my teeth",
+      "emoji": "\ud83e\udea5",
+      "stars": 1
+    },
+    {
+      "id": "morning-susan-1",
+      "r": "morning",
+      "who": "susan",
+      "title": "Put pajamas in basket",
+      "emoji": "\ud83e\uddfa",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "morning-susan-2",
+      "r": "morning",
+      "who": "susan",
+      "title": "Choose a book together",
+      "emoji": "\ud83d\udcda",
+      "stars": 1
+    },
+    {
+      "id": "morning-any-1",
+      "r": "morning",
+      "who": "any",
+      "title": "Fill the bird feeder",
+      "emoji": "\ud83d\udc26",
+      "stars": 1
+    },
+    {
+      "id": "after-dad-1",
+      "r": "after",
+      "who": "dad",
+      "title": "Take out recycling",
+      "emoji": "\u267b\ufe0f",
+      "completed": true
+    },
+    {
+      "id": "after-dad-2",
+      "r": "after",
+      "who": "dad",
+      "title": "Fold clean towels",
+      "emoji": "\ud83e\uddfa"
+    },
+    {
+      "id": "after-dad-3",
+      "r": "after",
+      "who": "dad",
+      "title": "Prep vegetables",
+      "emoji": "\ud83e\udd55"
+    },
+    {
+      "id": "after-mom-1",
+      "r": "after",
+      "who": "mom",
+      "title": "Water indoor plants",
+      "emoji": "\ud83e\udeb4",
+      "completed": true
+    },
+    {
+      "id": "after-mom-2",
+      "r": "after",
+      "who": "mom",
+      "title": "Plan next week's meals",
+      "emoji": "\ud83d\udcdd"
+    },
+    {
+      "id": "after-mom-3",
+      "r": "after",
+      "who": "mom",
+      "title": "Put laundry away",
+      "emoji": "\ud83d\udc55"
+    },
+    {
+      "id": "after-john-1",
+      "r": "after",
+      "who": "john",
+      "title": "Put LEGO in the bin",
+      "emoji": "\ud83e\uddf1",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "after-john-2",
+      "r": "after",
+      "who": "john",
+      "title": "Read for 15 minutes",
+      "emoji": "\ud83d\udcd6",
+      "stars": 2
+    },
+    {
+      "id": "after-john-3",
+      "r": "after",
+      "who": "john",
+      "title": "Set the table",
+      "emoji": "\ud83c\udf7d\ufe0f",
+      "stars": 1
+    },
+    {
+      "id": "after-susan-1",
+      "r": "after",
+      "who": "susan",
+      "title": "Put blocks in the bin",
+      "emoji": "\ud83e\uddf8",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "after-susan-2",
+      "r": "after",
+      "who": "susan",
+      "title": "Put books on the shelf",
+      "emoji": "\ud83d\udcda",
+      "stars": 1
+    },
+    {
+      "id": "after-susan-3",
+      "r": "after",
+      "who": "susan",
+      "title": "Help with napkins",
+      "emoji": "\ud83c\udf7d\ufe0f",
+      "stars": 1
+    },
+    {
+      "id": "after-any-1",
+      "r": "after",
+      "who": "any",
+      "title": "Sweep the kitchen",
+      "emoji": "\ud83e\uddf9",
+      "stars": 2
+    },
+    {
+      "id": "after-any-2",
+      "r": "after",
+      "who": "any",
+      "title": "Refill the water pitcher",
+      "emoji": "\ud83d\udca7",
+      "stars": 1
+    },
+    {
+      "id": "evening-dad-1",
+      "r": "evening",
+      "who": "dad",
+      "title": "Load dishwasher",
+      "emoji": "\ud83c\udf7d\ufe0f",
+      "completed": true
+    },
+    {
+      "id": "evening-dad-2",
+      "r": "evening",
+      "who": "dad",
+      "title": "Take out the trash",
+      "emoji": "\ud83d\uddd1\ufe0f"
+    },
+    {
+      "id": "evening-mom-1",
+      "r": "evening",
+      "who": "mom",
+      "title": "Wipe kitchen counters",
+      "emoji": "\ud83e\uddfd",
+      "completed": true
+    },
+    {
+      "id": "evening-mom-2",
+      "r": "evening",
+      "who": "mom",
+      "title": "Prep tomorrow's breakfast",
+      "emoji": "\ud83e\udd63"
+    },
+    {
+      "id": "evening-john-1",
+      "r": "evening",
+      "who": "john",
+      "title": "Put toys away",
+      "emoji": "\ud83e\uddf8",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "evening-john-2",
+      "r": "evening",
+      "who": "john",
+      "title": "Brush my teeth",
+      "emoji": "\ud83e\udea5",
+      "stars": 1
+    },
+    {
+      "id": "evening-susan-1",
+      "r": "evening",
+      "who": "susan",
+      "title": "Put teddy in bed",
+      "emoji": "\ud83e\uddf8",
+      "stars": 1,
+      "completed": true
+    },
+    {
+      "id": "evening-susan-2",
+      "r": "evening",
+      "who": "susan",
+      "title": "Choose bedtime story",
+      "emoji": "\ud83d\udcd6",
+      "stars": 1
+    },
+    {
+      "id": "evening-any-1",
+      "r": "evening",
+      "who": "any",
+      "title": "Tidy the living room",
+      "emoji": "\ud83d\udecb\ufe0f",
+      "stars": 2
+    }
+  ],
+  "shopping": {
+    "stores": [
+      "Boise Co-op",
+      "Costco"
+    ],
+    "categories": [
+      "Produce",
+      "Dairy & Eggs",
+      "Bakery",
+      "Pantry",
+      "Frozen",
+      "Household",
+      "Other"
+    ],
+    "items": [
+      {
+        "name": "Apples",
+        "category": "Produce",
+        "usual": true
+      },
+      {
+        "name": "Bananas",
+        "category": "Produce",
+        "usual": true
+      },
+      {
+        "name": "Carrots",
+        "category": "Produce",
+        "usual": false
+      },
+      {
+        "name": "Broccoli",
+        "category": "Produce",
+        "usual": false
+      },
+      {
+        "name": "Avocados",
+        "category": "Produce",
+        "usual": false
+      },
+      {
+        "name": "Eggs",
+        "category": "Dairy & Eggs",
+        "usual": true
+      },
+      {
+        "name": "Milk",
+        "category": "Dairy & Eggs",
+        "usual": true
+      },
+      {
+        "name": "Yogurt",
+        "category": "Dairy & Eggs",
+        "usual": false
+      },
+      {
+        "name": "Cheddar",
+        "category": "Dairy & Eggs",
+        "usual": false
+      },
+      {
+        "name": "Sourdough bread",
+        "category": "Bakery",
+        "usual": true
+      },
+      {
+        "name": "Whole-grain rolls",
+        "category": "Bakery",
+        "usual": false
+      },
+      {
+        "name": "Rolled oats",
+        "category": "Pantry",
+        "usual": false
+      },
+      {
+        "name": "Peanut butter",
+        "category": "Pantry",
+        "usual": false
+      },
+      {
+        "name": "Pasta",
+        "category": "Pantry",
+        "usual": false
+      },
+      {
+        "name": "Black beans",
+        "category": "Pantry",
+        "usual": false
+      },
+      {
+        "name": "Frozen berries",
+        "category": "Frozen",
+        "usual": false
+      },
+      {
+        "name": "Dish soap",
+        "category": "Household",
+        "usual": false
+      }
+    ],
+    "list": [
+      {
+        "name": "Apples",
+        "category": "Produce",
+        "store": "Boise Co-op",
+        "qty": 6
+      },
+      {
+        "name": "Bananas",
+        "category": "Produce",
+        "store": "Boise Co-op",
+        "qty": 1
+      },
+      {
+        "name": "Carrots",
+        "category": "Produce",
+        "store": "Boise Co-op",
+        "qty": 2
+      },
+      {
+        "name": "Sourdough bread",
+        "category": "Bakery",
+        "store": "Boise Co-op",
+        "qty": 1
+      },
+      {
+        "name": "Eggs",
+        "category": "Dairy & Eggs",
+        "store": "Costco",
+        "qty": 2
+      },
+      {
+        "name": "Milk",
+        "category": "Dairy & Eggs",
+        "store": "Costco",
+        "qty": 1
+      },
+      {
+        "name": "Rolled oats",
+        "category": "Pantry",
+        "store": "Costco",
+        "qty": 1
+      },
+      {
+        "name": "Peanut butter",
+        "category": "Pantry",
+        "store": "Costco",
+        "qty": 1
+      }
+    ]
+  },
+  "photoAlbum": "Forests & Mountains \u00b7 Demo Album",
+  "photoCredits": "photos/sources.json",
+  "demoPasscode": "1234",
+  "meals": {
+    "name": "Meals",
+    "color": "#FB8C00",
+    "slots": {
+      "breakfast": [
+        "Pancakes",
+        "Yogurt and berries"
+      ],
+      "lunch": [
+        "Sandwiches",
+        "Fruit"
+      ],
+      "dinner": [
+        "Tacos",
+        "Garden salad"
+      ]
+    }
+  },
+  "school": {
+    "name": "Lincoln Elementary",
+    "color": "#1E88E5",
+    "weekly": [
+      {
+        "days": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "start": "08:30",
+        "end": "14:30",
+        "title": "First grade"
+      },
+      {
+        "days": [
+          1,
+          3
+        ],
+        "start": "10:15",
+        "end": "11:00",
+        "title": "Music class"
+      },
+      {
+        "days": [
+          2
+        ],
+        "start": "13:00",
+        "end": "13:45",
+        "title": "Library day"
+      }
+    ],
+    "special": [
+      {
+        "day": 0,
+        "allDay": true,
+        "title": "Spirit day"
+      },
+      {
+        "day": 0,
+        "start": "08:30",
+        "end": "14:30",
+        "title": "First grade"
+      },
+      {
+        "day": 1,
+        "start": "09:00",
+        "end": "11:30",
+        "title": "Field trip"
+      },
+      {
+        "day": 10,
+        "start": "09:00",
+        "end": "09:45",
+        "title": "Parent conference"
+      }
+    ]
+  }
+}

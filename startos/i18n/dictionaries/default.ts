@@ -1,0 +1,102 @@
+export const DEFAULT_LANG = 'en_US'
+
+const dict = {
+  // main.ts
+  'Starting Frame Dashboard!': 0,
+  'Web Interface': 1,
+  'The web interface is ready': 2,
+  'The web interface is not ready': 3,
+  // interfaces.ts
+  'The main web interface': 4,
+  // actions/editPhotos.ts
+  'Shared album link': 5,
+  'A public iCloud shared album link: https://photos.icloud.com/shared/album/<token>/ or https://www.icloud.com/sharedalbum/#<token>. The album must use "Anyone with the Link" sharing.': 6,
+  'Must be a public iCloud shared album link': 7,
+  'Name (optional)': 8,
+  'A label for this album': 9,
+  'Edit Photos & Albums': 10,
+  'Choose the iCloud shared albums the Photos section and screensaver stream from. The box refreshes the album metadata on its sync interval; the frame loads each photo straight from Apple, and never talks to anything but your StartOS box and Apple.': 11,
+  Album: 12,
+  'Photos updated': 13,
+  'Albums saved. New photos appear after the next sync cycle, or run **Sync Now**.': 14,
+  // actions/editCalendars.ts
+  Name: 15,
+  'Name shown on the dashboard for this calendar, such as a person or Family.': 16,
+  Color: 17,
+  'Events from this calendar render in this color': 18,
+  'Public calendar link (ICS)': 19,
+  'Read-only. In Apple Calendar: share the calendar, enable "Public Calendar", copy the link. Private links would be stored on this box — use a calendar you are comfortable serving from your LAN.': 20,
+  'Use an https:// or webcal:// public calendar link.': 21,
+  'Edit Calendars': 22,
+  'The calendars shown in the Calendar section. Each one needs a public read-only ICS link; give every calendar a color (one per household member, plus a general one). The server fetches them; the frame never sees the links.': 23,
+  Calendar: 24,
+  'Calendars updated': 25,
+  'Calendars saved. Events appear after the next sync cycle, or run **Sync Now**.': 26,
+  // actions/editLocation.ts
+  'Edit Location & Units': 27,
+  'Where the frame is, for the weather forecast and radar, and how temperatures display. Weather comes from Open-Meteo (no API key needed).': 28,
+  'Location name': 29,
+  'Shown as a label, e.g. "Home"': 30,
+  Latitude: 31,
+  'Decimal degrees, e.g. 41.8781. Ignored when a ZIP is entered.': 32,
+  Longitude: 33,
+  'Decimal degrees, e.g. -87.6298. Ignored when a ZIP is entered.': 34,
+  'Time zone': 35,
+  'IANA name, e.g. America/Chicago. Controls the clock, calendars and weather. Blank uses the server’s zone (normally UTC).': 36,
+  'Temperature unit': 37,
+  'Fahrenheit (°F)': 38,
+  'Celsius (°C)': 39,
+  'Location & units saved': 40,
+  'Weather refreshes on the next sync cycle, or run **Sync Now**.': 41,
+  'Dim the screen at night': 56,
+  'After the frame sits idle at night, dim the dashboard instead of switching to the photo view. Photos and text stay visible; one touch wakes it.': 57,
+  'Red night colours': 58,
+  'Tint the dimmed night screen red to remove blue light before sleep. Has no effect while the screen is awake.': 59,
+  'Clock, calendar, weather and night display settings apply after the next sync cycle, or run **Sync Now**.': 60,
+  'US ZIP code (optional)': 61,
+  'Enter a 5-digit ZIP to set the location automatically; it replaces the coordinates below. Leave blank to keep the coordinates.': 62,
+  'Must be a 5-digit US ZIP code': 63,
+  'Location needed': 64,
+  'Enter a 5-digit US ZIP code, or a latitude and longitude. The weather forecast and radar need a location.': 65,
+  'ZIP code not found': 66,
+  // actions/editSidebar.ts
+  'Edit Sidebar': 67,
+  'Choose which sections appear in the dashboard sidebar and in what order. Today always stays first. Hidden sections stay reachable from Today cards and direct section links.': 68,
+  Today: 74,
+  Weather: 75,
+  Chores: 76,
+  Groceries: 77,
+  Photos: 78,
+  'Home controls': 79,
+  Agents: 80,
+  Meals: 83,
+  School: 84,
+  Albums: 85,
+  'Album name': 86,
+  'The album name Apple reports. Read-only.': 87,
+  'Sidebar updated': 81,
+  'Sidebar settings saved. The frame applies them on its next one-minute refresh.': 82,
+  // actions/syncNow.ts
+  'Sync Now': 42,
+  'Fetch new photos, calendars and weather immediately instead of waiting for the next sync cycle.': 43,
+  'Sync requested': 44,
+  'The next sync cycle is starting now. Photos, calendars and weather refresh over the following minute or two.': 45,
+  // actions/photoAlbumInfo.ts
+  'Photo Album Info': 46,
+  'Show album names, photo counts, capture dates and the last sync.': 47,
+  Red: 48,
+  Orange: 49,
+  Yellow: 50,
+  Green: 51,
+  Blue: 52,
+  Purple: 53,
+  Pink: 54,
+  Black: 55,
+} as const
+
+/**
+ * Plumbing. DO NOT EDIT.
+ */
+export type I18nKey = keyof typeof dict
+export type LangDict = Record<(typeof dict)[I18nKey], string>
+export default dict

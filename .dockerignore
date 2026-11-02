@@ -1,0 +1,9 @@
+.git
+.gitmodules
+node_modules
+javascript
+ncc-cache
+docker-images
+*.s9pk
+upstream-project/node_modules
+upstream-project/dist

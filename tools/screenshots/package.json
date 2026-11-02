@@ -1,0 +1,11 @@
+{
+  "name": "frame-dashboard-screenshots",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.mjs"
+  },
+  "devDependencies": {
+    "puppeteer": "25.16.0"
+  }
+}

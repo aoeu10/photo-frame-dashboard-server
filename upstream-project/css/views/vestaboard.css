@@ -1,0 +1,89 @@
+/* Vestaboard: a touch drawing grid plus a VBML composer. */
+.vb { height: 100%; display: flex; flex-direction: column; gap: 12px; }
+.vb-head { display: flex; align-items: center; gap: 16px; flex: none; }
+.vb-title { margin-right: auto; }
+.vb-title h1 { font-size: 56px; line-height: .95; }
+.vb-status {
+  display: flex; align-items: center; gap: 8px; min-width: 210px;
+  font-size: 15px; font-weight: 700; color: var(--mute);
+}
+.vb-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); flex: none; }
+.vb-dot.is-on { background: var(--ok); }
+.vb-dot.is-off { background: var(--alert); }
+.vb-dot.is-wait { background: var(--amber); }
+.vb-tabs { flex: none; }
+.vb-send {
+  min-height: 52px; padding: 0 24px; border-radius: 14px;
+  background: var(--ink); color: var(--paper);
+  font-size: 17px; font-weight: 800; font-stretch: 80%; letter-spacing: .04em;
+  flex: none;
+}
+.vb-send:active { transform: scale(.96); }
+.vb-send:disabled { opacity: .45; cursor: default; }
+.vb-body {
+  flex: 1; min-height: 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 20px;
+}
+.vb-stage { display: grid; place-items: center; min-height: 0; }
+.vb-board {
+  display: grid; gap: 3px; padding: 6px; border-radius: 10px;
+  background: var(--ink);
+  grid-template-columns: repeat(var(--cols), var(--cell));
+}
+.vb-cell {
+  width: var(--cell); height: var(--cell);
+  display: grid; place-items: center;
+  border-radius: 2px; background: #0B0B0B; color: var(--paper);
+  font-family: var(--sans); font-size: var(--cell-font); font-weight: 800;
+  font-stretch: 62%; line-height: 1; user-select: none;
+}
+.vb-cell.is-color { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25); }
+.vb-side { min-height: 0; overflow-y: auto; }
+.vb-palette { display: flex; flex-direction: column; gap: 6px; }
+.vb-palette .label { margin-top: 4px; }
+.vb-keys { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.vb-key {
+  min-height: 38px; border-radius: 8px; background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; font-stretch: 78%;
+}
+.vb-key:active { transform: scale(.94); }
+.vb-key.is-on { background: var(--ink); color: var(--paper); }
+.vb-key--color {
+  min-height: 38px; border: 2px solid var(--line);
+  background: var(--swatch);
+}
+.vb-key--color.is-on { outline: 3px solid var(--ink); outline-offset: 2px; }
+.vb-key--blank { grid-column: span 2; font-size: 13px; }
+.vb-tools { display: flex; align-items: center; gap: 8px; flex: none; }
+.vb-tools button {
+  min-height: 40px; padding: 0 14px; border-radius: 10px;
+  background: var(--card); font-size: 14px; font-weight: 800;
+}
+.vb-tools button:active { transform: scale(.96); }
+.vb-tools button:disabled { opacity: .4; }
+.vb-hint { flex: 1; min-width: 0; font-size: 14px; color: var(--mute); line-height: 1.3; }
+.vb-error { color: var(--alert); }
+.vb-vbml { display: flex; flex-direction: column; gap: 10px; }
+.vb-template, .vb-json {
+  width: 100%; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card); color: var(--ink); padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px; line-height: 1.4; resize: vertical;
+}
+.vb-template { min-height: 150px; }
+.vb-json { min-height: 110px; }
+.vb-options { display: flex; gap: 8px; }
+.vb-options label { flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--mute); }
+.vb-options select {
+  min-height: 40px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--paper-2); color: var(--ink); padding: 0 8px; font-size: 16px;
+}
+.vb-advanced summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--mute); margin: 4px 0; }
+.vb-note { font-size: 13px; line-height: 1.35; color: var(--mute); }
+.vb-note code { font-size: 12px; }
+.vb-preview {
+  min-height: 44px; border-radius: 10px; background: var(--paper-2);
+  font-size: 15px; font-weight: 800;
+}
+.vb-preview:active { transform: scale(.96); }

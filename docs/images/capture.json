@@ -1,0 +1,435 @@
+{
+  "capturedAt": "2026-11-02T17:58:51.972Z",
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "deviceScaleFactor": 1
+  },
+  "sceneTime": "2026-10-24T13:25:23.983149-06:00",
+  "timezone": "America/Boise",
+  "weatherFetchedAt": "2026-10-24T13:25:24.402738-06:00",
+  "fixtureSha256": "1df48a47417ab157d706a9e92e42ccc47626bcc94f4b8f8c62004ddee02d227a",
+  "notes": "Fictional family and calendar. Live Boise weather/radar. Local credited Unsplash photos. No live StartOS configuration or printers used. Only Meals and School screenshots were refreshed on 2026-11-02; all other screenshots and their original scene metadata were preserved. mealsSchoolCapture records the refreshed screenshots' provenance.",
+  "mealsSchoolCapture": {
+    "capturedAt": "2026-11-02T17:58:51.972Z",
+    "sceneTime": "2026-11-02T10:57:48.722098-07:00",
+    "weatherFetchedAt": "2026-11-02T10:57:49.354180-07:00",
+    "timezone": "America/Boise",
+    "fixtureSha256": "efe01978b8d29470146eda6b50c7aab49e47ea911196d696a9056820853f1939"
+  },
+  "screenshots": [
+    {
+      "file": "frame-chores-morning.png",
+      "description": "morning chores with simulated completions for all four family members",
+      "bytes": 99604,
+      "sha256": "e7cce5e56e976ae012eac357fb1933e11fc8d324981c894a33d113c9aa3014ee",
+      "view": "tasks",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-chores.png",
+      "description": "after chores with simulated completions for all four family members",
+      "bytes": 126607,
+      "sha256": "845390ee8f0293ee0a200d14ba8b1790b380f2d4d453bd1734d173aaf39762e5",
+      "view": "tasks",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-chores-evening.png",
+      "description": "evening chores with simulated completions for all four family members",
+      "bytes": 100256,
+      "sha256": "e11653d4740026289459379b788762ccf721ec38c42fa4f3b338add1d81e2dd4",
+      "view": "tasks",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-today.png",
+      "description": "Today: family activities, next event, weather, photos, partially completed chores, groceries",
+      "bytes": 281475,
+      "sha256": "55afaeb014bd35ce3d5ae7c08c8cf52b6f1e09c80db9d7e67d6bb709ea9f4900",
+      "view": "home",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-calendar.png",
+      "description": "day calendar view with Dad, Mom, John (6), and Susan (2)",
+      "bytes": 100434,
+      "sha256": "d1ac67c7b134a033cc6ebe06b5f7d71f4d9f0eeb421968c0f14ac46ed46c22c9",
+      "view": "calendar",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-calendar-3day.png",
+      "description": "3day calendar view with Dad, Mom, John (6), and Susan (2)",
+      "bytes": 102177,
+      "sha256": "9363ac0c73397d8e8b66420445c519522eedbdad950a159e560aa39b94219685",
+      "view": "calendar",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-calendar-week.png",
+      "description": "week calendar view with Dad, Mom, John (6), and Susan (2)",
+      "bytes": 153193,
+      "sha256": "bd9fa543e44f85a3539af94b089709999664fe52a304022da291f6f209518632",
+      "view": "calendar",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-calendar-month.png",
+      "description": "month calendar view with Dad, Mom, John (6), and Susan (2)",
+      "bytes": 133646,
+      "sha256": "8a98feaa32f3f9d72c2f972db926f220a044df37b476637d26ca989d7c2a0a0c",
+      "view": "calendar",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-groceries-coop.png",
+      "description": "Boise Co-op grocery list and selected catalog items",
+      "bytes": 91065,
+      "sha256": "897f8d1c7d4c9cc5fde12cbcfbab9e208aaaa39ef0d461d96d99773a0a9a5255",
+      "view": "shopping",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-groceries-costco.png",
+      "description": "Costco grocery list and selected catalog items",
+      "bytes": 88677,
+      "sha256": "446dfd4e5a22bc775457e31bda43dac359818a93d369e0865a21f81264984ae5",
+      "view": "shopping",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-groceries.png",
+      "description": "All groceries with both store assignments and quantities",
+      "bytes": 106752,
+      "sha256": "f17b5e361d4a522db3b4fb1baa788a66c9505bd2c4805b7c83cca4c30bcc1349",
+      "view": "shopping",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-person.png",
+      "description": "Dad's personal page: remaining-day summary, agenda, weather, photo and chores",
+      "bytes": 121944,
+      "sha256": "3ebae9d711a6bc3c814586fcb1dce944e14a0efe7d81c8ee3b68a62b48d139af",
+      "view": "user-dad",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-photos.png",
+      "description": "Full-screen forest or mountain photo in Cover layout",
+      "bytes": 1495606,
+      "sha256": "07a2b28055d038dbf8c52fc6cecb14eb82919a6343688cc29f1be7b50d03c78e",
+      "view": "photos",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-photos-collage.png",
+      "description": "Forest and mountain photos in Collage layout",
+      "bytes": 1182199,
+      "sha256": "c082154d5c7d66c0795838476051c9a7a44ce5150bf410342c8e00d6f3b2ae78",
+      "view": "photos",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-photos-polaroid.png",
+      "description": "Polaroid photo layout",
+      "bytes": 544742,
+      "sha256": "2012ec1f4ce0c016974084fa2303c8ec01fd1f4d01d8b4f689d968038e01a597",
+      "view": "photos",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-screensaver.png",
+      "description": "Photo screensaver reached through the real idle transition",
+      "bytes": 678777,
+      "sha256": "41d253e7f3cff893095b12fd09cdb76e0716ec03d4fc1efc20509d26c6caf2a6",
+      "view": "home",
+      "mode": "ambient",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-night-red.png",
+      "description": "Actual dimmed red-light night mode; image has not been brightened",
+      "bytes": 189777,
+      "sha256": "352cc356f65d873ce4c968a8342f4f1c61a83a91b69358ddd2fcdae0f51476ef",
+      "view": "home",
+      "mode": "night",
+      "red": true,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-lock-options.png",
+      "description": "Screen lock options: pin a section, lock entirely, or set a passcode",
+      "bytes": 245007,
+      "sha256": "036c58e024ad411f1144ab2063d87cdabec5f27541dff9a47c0297cb361d0f43",
+      "view": "home",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-lock-pinned.png",
+      "description": "Today pinned while touches within Today remain enabled",
+      "bytes": 286567,
+      "sha256": "665391dc2b4392596e15acc7b088309500f3d8fdb360d26230ceee4e200bb4cd",
+      "view": "home",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": "section",
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-lock.png",
+      "description": "Entire screen locked with the actual touch-blocking shield",
+      "bytes": 235774,
+      "sha256": "af50236e5c6792c79dd689a94346b388660c3ef7cbea56ce6372fd37ab82240d",
+      "view": "home",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": "full",
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-lock-passcode.png",
+      "description": "Passcode keypad for unlocking the frame",
+      "bytes": 198026,
+      "sha256": "f6049bdd5e01be91b14ce39e77ee7599052a7f1c47241c71a783f41689c84d13",
+      "view": "home",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": "full",
+        "section": "home"
+      },
+      "radarTime": "Loading radar…"
+    },
+    {
+      "file": "frame-weather.png",
+      "description": "Live Boise forecast and fully buffered RainViewer replay over the real basemap",
+      "bytes": 172419,
+      "sha256": "d81edc518079920166b2bf9ee087bdaa3c17ac683a362a925feebd8eb1064975",
+      "view": "weather",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "11:30 AM"
+    },
+    {
+      "file": "frame-weather-local.png",
+      "description": "Boise live radar zoomed to local geographic context",
+      "bytes": 235090,
+      "sha256": "5a8849bfd458358916bec8f27cbbf76a9eb8e2ada54f04c8b9f1d6869e47c59f",
+      "view": "weather",
+      "mode": "day",
+      "red": false,
+      "lock": {
+        "mode": null,
+        "section": "home"
+      },
+      "radarTime": "11:30 AM"
+    },
+    {
+      "file": "frame-meals.png",
+      "description": "Meals Today: Breakfast, Lunch and Dinner from the meal calendar",
+      "bytes": 57718,
+      "sha256": "4b819fae1b798f2f3b812ed63fbdf8692391fa7c4b224120412a5145031cc210",
+      "view": "meals",
+      "mode": "day",
+      "calendarMode": "day",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-meals-3day.png",
+      "description": "Meals 3 Day view: one column per day starting today",
+      "bytes": 84979,
+      "sha256": "ef355d65fb264f8b05bb1c954a418383b82adac2e9d0d34ad4b2ad4810c06f7f",
+      "view": "meals",
+      "mode": "day",
+      "calendarMode": "3day",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-meals-week.png",
+      "description": "Meals Week view: seven days of breakfast, lunch and dinner",
+      "bytes": 89000,
+      "sha256": "4852a7cef288ae2a92b69048a3d9b963e6f94561c537375fc4e5770d612cb5b7",
+      "view": "meals",
+      "mode": "day",
+      "calendarMode": "week",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-school.png",
+      "description": "School Today: all-day Spirit day and First grade at Lincoln Elementary",
+      "bytes": 54644,
+      "sha256": "839daa259f0320be298be0ad66136a3d22e1c31f39810cb448bb7cf9f1bfa3dd",
+      "view": "school",
+      "mode": "day",
+      "calendarMode": "day",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-school-3day.png",
+      "description": "School 3 Day view: Lincoln Elementary activities",
+      "bytes": 58703,
+      "sha256": "b33198095cd1ab9a590ae1279af67a57440876e706aa023f204456000710217f",
+      "view": "school",
+      "mode": "day",
+      "calendarMode": "3day",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-school-week.png",
+      "description": "School Week view: Lincoln Elementary activities",
+      "bytes": 70867,
+      "sha256": "5966e421c16279af85dac9c8bbfd4d21d7c9cbc4c39834cf392e5d82b64a10f9",
+      "view": "school",
+      "mode": "day",
+      "calendarMode": "week",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    },
+    {
+      "file": "frame-school-month.png",
+      "description": "School Month view: Lincoln Elementary activities",
+      "bytes": 105015,
+      "sha256": "2dcfc9652b7ddf787eabf9146c2f4f5d729acfed1cf938d181b8dd29ba4bce93",
+      "view": "school",
+      "mode": "day",
+      "calendarMode": "month",
+      "lock": {
+        "mode": null,
+        "section": "home"
+      }
+    }
+  ]
+}

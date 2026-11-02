@@ -1,0 +1,63 @@
+/* Meals: today's entries bucketed into Breakfast, Lunch and Dinner. */
+.meals { height: 100%; display: flex; flex-direction: column; }
+.m-head { display: flex; align-items: flex-end; gap: 24px; margin-bottom: 18px; flex: none; }
+.m-title h1 { font-size: 64px; line-height: .95; }
+.m-source { margin-left: auto; color: var(--mute); }
+
+.m-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.m-slot {
+  min-height: 0; display: flex; flex-direction: column;
+  background: var(--card); border-radius: var(--r); padding: 20px 22px;
+}
+.m-list { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.m-list li {
+  position: relative; padding-left: 24px;
+  font-size: var(--fs-l); line-height: 1.12; font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.m-list li::before {
+  content: ''; position: absolute; left: 6px; top: .5em;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--ink);
+}
+.m-none { margin-top: 16px; font-size: var(--fs-m); color: var(--mute); }
+.m-empty {
+  margin: auto; text-align: center; font-size: var(--fs-l); color: var(--mute);
+  line-height: 1.25;
+}
+
+/* 3 Day and Week views, mirroring the Calendar section's top tabs. */
+.m-head .seg { margin-left: auto; }
+.m-source { margin-left: 16px; }
+.m-days {
+  flex: 1; min-height: 0; overflow-y: auto;
+  display: grid; gap: 10px;
+}
+.m-days--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.m-days--7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.m-day {
+  min-height: 0; display: flex; flex-direction: column; gap: 10px;
+  background: var(--card); border-radius: var(--r); padding: 12px;
+}
+.m-day.is-today { box-shadow: inset 0 0 0 2px var(--ink); }
+.m-day-head { display: flex; flex-direction: column; line-height: 1.05; }
+.m-day-head b {
+  font-size: var(--fs-label); font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.m-day-head span { font-size: var(--fs-min); color: var(--mute); }
+.m-mini { display: flex; flex-direction: column; gap: 4px; }
+.m-mini .label { font-size: var(--fs-min); }
+.m-mini-list { display: flex; flex-direction: column; gap: 4px; }
+.m-mini-list li {
+  position: relative; padding-left: 12px;
+  font-size: var(--fs-body); line-height: 1.1; font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.m-mini-list li::before {
+  content: ''; position: absolute; left: 2px; top: .5em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--ink);
+}
+.m-mini-none { color: var(--mute); font-size: var(--fs-m); }
+.m-days--7 .m-day { padding: 10px 8px; }
+.m-days--7 .m-mini-list li { font-size: var(--fs-min); }
+.m-days--7 .m-mini-none { font-size: var(--fs-min); }

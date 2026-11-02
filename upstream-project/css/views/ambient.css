@@ -1,0 +1,37 @@
+/* Ambient (idle photo frame) */
+.ambient { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 65; background: #000; display: none; color: #fff; cursor: pointer; }
+.stage[data-mode="ambient"] .ambient { display: block; }
+.amb-stage { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
+.amb-scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 60%; background: linear-gradient(0deg, rgba(0, 0, 0, .75), rgba(0, 0, 0, 0)); pointer-events: none; }
+.amb-info { position: absolute; left: 60px; right: 60px; bottom: 48px; display: flex; justify-content: space-between; align-items: flex-end; }
+.amb-time { font-size: 230px; line-height: .78; letter-spacing: -.04em; }
+.amb-date { font-family: var(--serif); font-size: 38px; margin-top: 16px; }
+.amb-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.amb-wx { display: flex; align-items: center; gap: 12px; }
+.amb-wx .num { font-size: 72px; line-height: .8; }
+.amb-wx small { font-family: var(--serif); font-size: 26px; font-style: italic; max-width: 220px; line-height: 1.05; }
+.amb-next {
+  display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px; border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+  font-size: 20px; font-weight: 700;
+}
+.amb-next i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px #fff; }
+
+/* Night: the dashboard stays visible but dimmed, so photos and text are still
+   readable. One touch wakes it. Optional red mode removes blue light. */
+.dim { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 66; display: none; cursor: pointer; }
+.stage[data-mode="night"] .dim { display: block; background: rgba(0, 0, 0, .62); }
+.stage[data-mode="night"][data-red="1"] .dim { background: rgba(90, 0, 0, .62); }
+.stage[data-mode="night"] > .rail,
+.stage[data-mode="night"] > .views { filter: brightness(.42) saturate(.8); }
+.stage[data-mode="night"][data-red="1"] > .rail,
+.stage[data-mode="night"][data-red="1"] > .views {
+  filter: brightness(.42) saturate(.8) sepia(1) saturate(4) hue-rotate(-28deg);
+}
+.stage[data-mode="night"] .lock-float { display: none; }
+.dim-hint {
+  position: absolute; left: 0; right: 0; bottom: 26px; text-align: center;
+  font-size: 15px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .42); pointer-events: none;
+}
+.stage[data-red="1"] .dim-hint { color: rgba(255, 160, 140, .5); }
