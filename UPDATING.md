@@ -34,7 +34,15 @@ covers the packaging only. The vendored page keeps its upstream attribution.
 - `css/views/calendar.css`, `css/views/home.css`, `css/views/tasks.css` —
   roster-sized layouts.
 - `js/slideshow.js` / `js/views/photos.js` — Apple CDN photo sources, capture
-  dates, empty-album handling and removal of Favourite weighting/controls.
+  dates, empty-album handling (the empty state names both iCloud and Immich)
+  and removal of Favourite weighting/controls.
+- `css/base.css`, `js/app.js`, `js/diag.js`, `js/views/control.js` — 16:9 fill
+  from upstream [PR #226](https://github.com/wesbos/photo-frame-dashboard/pull/226):
+  the stage keeps its 800 px height and takes its width from `--stage-w`
+  (minimum 1280), so 1920 × 1080 frames fill the panel. The garage
+  slide-to-confirm, `App.centerOf()` and the diagnostics overlay scale from
+  `stage.height / 800`, per the merged follow-up. The pin predates this PR, so
+  an upstream refresh must re-apply it.
 - `css/views/photos.css` — photo navigation spacing beside the lock.
 - `js/views/calendar.js` month grid + `css/views/calendar.css` month styles —
   titled month cells adapted from
