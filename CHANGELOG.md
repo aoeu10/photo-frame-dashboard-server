@@ -3,6 +3,16 @@
 Package versions follow StartOS's `<version>:<revision>` format. Each versioned
 entry is the release note shipped with that package version.
 
+## 1.2.76 — 2026-11-03
+
+**16:9 screens fill the panel.** The dashboard stage now follows the screen
+aspect while keeping its 800 px design height, so 1920 × 1080 frames such as
+the DPF Frame 156 render edge to edge instead of showing 96 px black bars on
+each side. 16:10 screens are unchanged, narrower screens letterbox as before,
+and the garage slide-to-confirm, `App.centerOf()` and the diagnostics overlay
+scale from the stage height. Includes upstream
+[PR #226](https://github.com/wesbos/photo-frame-dashboard/pull/226).
+
 ## 1.2.75 — 2026-11-03
 
 **Immich photo albums.** Edit Photos & Albums now has an **Immich albums**

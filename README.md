@@ -135,7 +135,7 @@ and update the saved URL if the service's address or port changes.
 | Frame | Display | Status |
 | --- | --- | --- |
 | [Dragon Touch Classic10 Charm](docs/dragontouch-classic10-charm.md) | 1280 × 800 | Works, full screen |
-| DPF Frame 156 (`FRAME156`, RK3326, Android 8.1) | 1920 × 1080 | Works; the dashboard shows 96 px black bars on each side until the dashboard source includes upstream's 16:9 fill fix ([#226](https://github.com/wesbos/photo-frame-dashboard/pull/226)). 1280 × 800 frames are unchanged by that fix. |
+| DPF Frame 156 (`FRAME156`, RK3326, Android 8.1) | 1920 × 1080 | Works, full screen. The vendored dashboard includes upstream's 16:9 fill fix ([#226](https://github.com/wesbos/photo-frame-dashboard/pull/226)) and its follow-up height scaling, so the stage fills the panel instead of showing 96 px side bars. 1280 × 800 frames are unchanged. |
 
 ## Screenshots
 

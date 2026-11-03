@@ -7,7 +7,10 @@
 > Everything not listed in this document should behave the same as the upstream
 > dashboard. The served page is the `dashboard/` directory of
 > [wesbos/photo-frame-dashboard](https://github.com/wesbos/photo-frame-dashboard)
-> (commit `48b4ab0`), adapted here for StartOS data, screen locking and photo streaming.
+> (commit `48b4ab0`), adapted here for StartOS data, screen locking and photo
+> streaming. It also carries upstream PR #226 (fill 16:9 screens) and its
+> follow-up height scaling for the garage slider, `App.centerOf()` and the
+> diagnostics overlay.
 
 ## Table of Contents
 
