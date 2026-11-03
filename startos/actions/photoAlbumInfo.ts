@@ -23,7 +23,7 @@ export const photoAlbumInfo = sdk.Action.withoutInput(
     const summary = (snapshot?.photoAlbums || [])
       .map(
         (album) =>
-          `${album.name || album.configuredName || 'Shared album'}: ${album.photoCount} photos${album.status === 'ok' ? '' : ' (sync error)'}`,
+          `${album.name || album.configuredName || 'Album'}: ${album.photoCount} photos${album.status === 'ok' ? '' : ' (sync error)'}`,
       )
       .join('; ')
     return {
@@ -42,20 +42,23 @@ export const photoAlbumInfo = sdk.Action.withoutInput(
     const snapshot = await frameCache.read().once()
     const configured = await configJson.read().once()
     const albums = snapshot?.photoAlbums || []
+    const configuredCount =
+      (configured?.albums?.length || 0) +
+      (configured?.immichAlbums?.length || 0)
     if (!albums.length) {
       return {
         version: '1' as const,
         title: 'Photo Album Info',
-        message: configured?.albums.length
+        message: configuredCount
           ? 'Album information is not available yet. Run **Sync Now**, then reopen this action.'
-          : 'No shared albums are configured. Add an album in **Edit Photos & Albums**.',
+          : 'No albums are configured. Add an album in **Edit Photos & Albums**.',
         result: null,
       }
     }
     return {
       version: '1' as const,
       title: 'Photo Album Info',
-      message: `Snapshot from the last completed sync: ${snapshot?.generated_at || 'unknown'}.\nCapture dates are supplied by Apple, not the date photos were added to the album. Reopen this action after **Sync Now** to see updated information.`,
+      message: `Snapshot from the last completed sync: ${snapshot?.generated_at || 'unknown'}.\nCapture dates come from the album provider, not the date photos were added to the album. Reopen this action after **Sync Now** to see updated information.`,
       result: {
         type: 'group' as const,
         value: albums.map((album) => ({
@@ -63,10 +66,22 @@ export const photoAlbumInfo = sdk.Action.withoutInput(
           name: album.name || album.configuredName || 'Shared album',
           description: null,
           value: [
-            field('Album name', album.name || 'Not supplied by Apple'),
+            field(
+              'Source',
+              album.provider === 'immich'
+                ? `Immich — ${album.server || 'server not recorded'}`
+                : 'iCloud shared album',
+            ),
+            field(
+              'Album name',
+              album.name ||
+                (album.provider === 'immich'
+                  ? 'Not supplied by Immich'
+                  : 'Not supplied by Apple'),
+            ),
             field(
               'Dashboard label',
-              album.configuredName || album.name || 'Shared album',
+              album.configuredName || album.name || 'Album',
             ),
             field('Photos', String(album.photoCount)),
             field(

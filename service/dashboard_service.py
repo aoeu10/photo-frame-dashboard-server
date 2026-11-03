@@ -3,13 +3,14 @@
 
 Threads:
   - sync loop: every sync_interval_minutes (or immediately when
-    /data/sync.now.json appears) fetches the configured public iCloud shared
-    album METADATA (the frame streams the images from Apple's CDN), merges the
-    configured ICS calendars, fetches the Open-Meteo forecast, and writes
+    /data/sync.now.json appears) fetches the configured photo album METADATA
+    (public iCloud shared albums and Immich albums), merges the configured ICS
+    calendars, fetches the Open-Meteo forecast, and writes
     /data/frame_cache.json.
   - API server on 127.0.0.1:8080: GET /api/frame serves the latest document
-    (nginx proxies /api/ here). The frame never talks to anything but nginx
-    and Apple's photo CDN.
+    (nginx proxies /api/ here). The frame never talks to anything but nginx.
+    iCloud photos stream from Apple's CDN; Immich images are proxied by this
+    service because the frame cannot send an Immich API key.
 
 Config: /data/config.json (written by the StartOS config actions), re-read
 whenever its mtime changes. No restart needed.
@@ -19,6 +20,7 @@ import json
 import math
 import os
 import re
+import ssl
 import threading
 import time
 import urllib.parse
@@ -46,6 +48,21 @@ MAX_SYNC_PAGES = 100
 MAX_PHOTO_EDGE = 1600
 ICAL_PAST_DAYS = 7
 ICAL_AHEAD_DAYS = 35
+
+IMMICH_TIMEOUT = 20
+IMMICH_PAGE_SIZE = 1000
+IMMICH_MAX_PAGES = 100
+IMMICH_THUMB_SIZES = ("thumbnail", "preview")
+IMMICH_UUID_RE = re.compile(
+    r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+    r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+)
+
+
+class ImmichHttpError(ValueError):
+    def __init__(self, status, message):
+        super().__init__(message)
+        self.status = status
 
 _log_lock = threading.Lock()
 
@@ -264,20 +281,308 @@ def _photo_time(timestamp, offset=None):
     except (TypeError, ValueError, OverflowError, OSError):
         return None
 
+# ---------------------------------------------------------------- immich albums
+def normalize_immich_server(text):
+    """Base URL without a trailing slash, or None when unusable."""
+    value = str(text or "").strip()
+    try:
+        u = urllib.parse.urlparse(value)
+    except ValueError:
+        return None
+    if u.scheme not in ("http", "https") or not u.hostname:
+        return None
+    if u.username or u.password or u.query or u.fragment:
+        return None
+    return "%s://%s%s" % (u.scheme, u.netloc, u.path.rstrip("/"))
+
+
+def parse_immich_album(text):
+    """Album UUID from a bare ID or an Immich album page link, else None."""
+    value = str(text or "").strip()
+    if IMMICH_UUID_RE.fullmatch(value):
+        return value.lower()
+    try:
+        u = urllib.parse.urlparse(value)
+    except ValueError:
+        return None
+    if u.scheme not in ("http", "https") or not u.hostname:
+        return None
+    match = re.search(r"/albums/([0-9a-fA-F-]{36})/?$", u.path)
+    if match and IMMICH_UUID_RE.fullmatch(match.group(1)):
+        return match.group(1).lower()
+    return None
+
+
+def immich_source(album):
+    """(server, album_id) for a configured Immich row, else None.
+
+    The server may be omitted when the album field is a full album page link;
+    its origin and any reverse-proxy prefix are then derived from that link.
+    """
+    if not isinstance(album, dict):
+        return None
+    server = normalize_immich_server(album.get("server"))
+    raw = str(album.get("albumId") or "").strip()
+    album_id = parse_immich_album(raw)
+    if not album_id:
+        return None
+    if not server and raw.lower().startswith(("http://", "https://")):
+        u = urllib.parse.urlparse(raw)
+        prefix = re.sub(r"/albums/[0-9a-fA-F-]{36}/?$", "", u.path)
+        server = normalize_immich_server(
+            "%s://%s%s" % (u.scheme, u.netloc, prefix))
+    if not server:
+        return None
+    return server, album_id
+
+
+def _immich_local_host(host):
+    if host in ("localhost", "127.0.0.1", "::1") or host.endswith(".local"):
+        return True
+    match = re.fullmatch(r"(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})", host)
+    if not match:
+        return False
+    parts = [int(part) for part in match.groups()]
+    if any(part > 255 for part in parts):
+        return False
+    return (parts[0] == 10
+            or (parts[0] == 172 and 16 <= parts[1] <= 31)
+            or (parts[0] == 192 and parts[1] == 168)
+            or parts[0] == 127)
+
+
+def immich_ssl_context(server):
+    """Unverified TLS only for LAN/.local hosts with self-signed certs.
+
+    StartOS and UmbrelOS expose services on .local hostnames (often HTTPS with
+    a self-signed certificate), matching the printer precedent. Public
+    hostnames keep normal certificate verification.
+    """
+    u = urllib.parse.urlparse(server)
+    if u.scheme != "https" or not u.hostname:
+        return None
+    if _immich_local_host(u.hostname.lower()):
+        return ssl._create_unverified_context()
+    return None
+
+
+def immich_json(server, path, api_key, body=None):
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(server + path, data=data,
+                                 method="POST" if data else "GET")
+    req.add_header("x-api-key", api_key)
+    req.add_header("Accept", "application/json")
+    if data:
+        req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(
+                req, timeout=IMMICH_TIMEOUT,
+                context=immich_ssl_context(server)) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            raise ImmichHttpError(e.code, "Immich rejected the API key.")
+        if e.code == 404:
+            raise ImmichHttpError(e.code, "Immich could not find that album.")
+        raise ImmichHttpError(e.code, "Immich returned HTTP %d." % e.code)
+
+
+def immich_search_assets(server, api_key, album_id):
+    """Album assets from search/metadata.
+
+    Immich v3 omits assets from the album response. Its search DTO uses a
+    filter object and a cursor; older servers use top-level albumIds and page
+    numbers. Try the current shape first, then fall back on a 400/422.
+    """
+    assets, cursor, page = [], None, 1
+    use_filter, seen_cursors = True, set()
+    while len(assets) < IMMICH_MAX_PAGES * IMMICH_PAGE_SIZE:
+        body = {"size": IMMICH_PAGE_SIZE, "withExif": True}
+        if use_filter:
+            body["filter"] = {"albumIds": {"all": [album_id]}}
+            if cursor:
+                body["cursor"] = cursor
+        else:
+            body["albumIds"] = [album_id]
+            body["page"] = page
+        try:
+            result = immich_json(server, "/api/search/metadata", api_key, body)
+        except ImmichHttpError as e:
+            if use_filter and e.status in (400, 422):
+                use_filter = False
+                continue
+            raise
+        block = result.get("assets") or {}
+        items = block.get("items") or []
+        if not items:
+            break
+        assets.extend(items)
+        next_cursor = block.get("nextCursor")
+        if next_cursor:
+            if next_cursor in seen_cursors:
+                break
+            seen_cursors.add(next_cursor)
+            cursor = next_cursor
+            continue
+        next_page = block.get("nextPage")
+        if next_page:
+            try:
+                page = int(next_page)
+            except (TypeError, ValueError):
+                break
+            continue
+        try:
+            total = int(block.get("total") or 0)
+        except (TypeError, ValueError):
+            total = 0
+        if total and len(assets) < total:
+            page += 1
+            continue
+        break
+    return assets
+
+
+def _int_or_zero(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _parse_datetime(value):
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (AttributeError, TypeError, ValueError):
+        return None
+
+
+def _immich_time(asset):
+    """(taken_ms, offset_seconds) from the photographer's local timestamp.
+
+    Immich serializes fileCreatedAt and EXIF dateTimeOriginal as UTC, so an
+    evening photo can land on the next calendar day. localDateTime is
+    timezone-agnostic and preserves the local date; treat it as UTC so
+    _photo_time keeps that date unchanged. UTC timestamps are the fallback
+    when localDateTime is absent.
+    """
+    parsed = _parse_datetime(asset.get("localDateTime"))
+    if parsed is not None:
+        return int(parsed.replace(tzinfo=timezone.utc).timestamp() * 1000), 0
+    exif = asset.get("exifInfo") or {}
+    for value in (exif.get("dateTimeOriginal"), asset.get("fileCreatedAt")):
+        parsed = _parse_datetime(value)
+        if parsed is None:
+            continue
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        offset = int(parsed.utcoffset().total_seconds()) if parsed.tzinfo else None
+        return int(parsed.timestamp() * 1000), offset
+    return None, None
+
+
+def _immich_photo(asset, album_id):
+    """One manifest photo, or None for videos/trashed/unusable assets."""
+    if not isinstance(asset, dict):
+        return None
+    if str(asset.get("type") or "").upper() != "IMAGE":
+        return None
+    if asset.get("isTrashed") is True:
+        return None
+    asset_id = str(asset.get("id") or "")
+    if not IMMICH_UUID_RE.fullmatch(asset_id):
+        return None
+    exif = asset.get("exifInfo") or {}
+    width = _int_or_zero(asset.get("width") or exif.get("exifImageWidth"))
+    height = _int_or_zero(asset.get("height") or exif.get("exifImageHeight"))
+    taken_ms, offset = _immich_time(asset)
+    added_ms = _parse_timestamp(asset.get("createdAt"))
+    return {
+        "id": asset_id,
+        "src": "/api/immich/photo/%s/%s?size=preview" % (album_id, asset_id),
+        "thumbsrc": "/api/immich/photo/%s/%s?size=thumbnail" % (album_id, asset_id),
+        "w": width,
+        "h": height,
+        "taken_ms": taken_ms,
+        "offset": offset,
+        "added_ms": added_ms,
+    }
+
+
+def immich_album_photos(server, api_key, album_id):
+    album = immich_json(
+        server, "/api/albums/%s?withoutAssets=false" % album_id, api_key)
+    assets = album.get("assets")
+    if not isinstance(assets, list):
+        assets = immich_search_assets(server, api_key, album_id)
+    photos = []
+    for asset in assets:
+        photo = _immich_photo(asset, album_id)
+        if photo:
+            photos.append(photo)
+    return {"name": str(album.get("albumName") or ""), "photos": photos}
+
+
+def immich_thumbnail(server, api_key, asset_id, size):
+    if size not in IMMICH_THUMB_SIZES:
+        raise ValueError("Unsupported image size.")
+    req = urllib.request.Request(
+        "%s/api/assets/%s/thumbnail?size=%s" % (server, asset_id, size))
+    req.add_header("x-api-key", api_key)
+    try:
+        with urllib.request.urlopen(
+                req, timeout=30,
+                context=immich_ssl_context(server)) as r:
+            return r.read(), r.headers.get("Content-Type") or "image/jpeg"
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            raise ValueError("Immich rejected the API key.")
+        raise ValueError("Immich returned HTTP %d." % e.code)
+
+
 # ---------------------------------------------------------------- photos (streaming)
 # Like iphoto-frame-saver, photos are never copied to a folder: the box fetches
-# only the album METADATA (guid + rendition URLs + dates) on its sync interval,
-# and the frame streams each image straight from Apple's CDN when it renders it.
+# only the album METADATA (rendition URLs, proxy paths and dates) on its sync
+# interval, and the frame streams each image from Apple's CDN or through this
+# box's Immich proxy when it renders it.
+
+
+def _album_info(provider, server, label):
+    return {"provider": provider, "server": server, "configuredName": label,
+            "name": "", "photoCount": 0, "datedPhotoCount": 0,
+            "oldestTaken": None, "newestTaken": None,
+            "status": "ok", "error": None}
+
+
+def _append_album_photos(manifest, photos, label, album_name, default_place):
+    """Add manifest entries; return the capture dates found."""
+    dates = []
+    for photo in photos:
+        taken = _photo_time(photo.get("taken_ms"), photo.get("offset"))
+        added = _photo_time(photo.get("added_ms"))
+        date = taken.date().isoformat() if taken else None
+        if date:
+            dates.append(date)
+        entry = {"src": photo["src"], "w": photo["w"], "h": photo["h"],
+                 "o": "p" if photo["h"] > photo["w"] else "l",
+                 "date": date, "takenAt": taken.isoformat() if taken else None,
+                 "addedAt": added.isoformat() if added else None,
+                 "place": label or album_name or default_place}
+        if photo.get("thumbsrc"):
+            entry["thumbsrc"] = photo["thumbsrc"]
+        manifest.append(entry)
+    return dates
 
 
 def build_album_manifest(config):
     """Photo manifest and per-album sync information; no image downloads."""
     manifest, albums = [], []
     for album in config.get("albums") or []:
-        label = album.get("name") or ""
-        info = {"configuredName": label, "name": "", "photoCount": 0,
-                "datedPhotoCount": 0, "oldestTaken": None, "newestTaken": None,
-                "status": "ok", "error": None}
+        if not isinstance(album, dict):
+            continue
+        label = str(album.get("name") or "")
+        info = _album_info("icloud", "", label)
         albums.append(info)
         parsed = parse_album_url(album.get("url"))
         if not parsed:
@@ -296,20 +601,40 @@ def build_album_manifest(config):
             info.update(status="error", error="Could not read the public album. Check the link and run Sync Now.")
             continue
         info["name"] = fetched["name"]
-        dates = []
-        for photo in fetched["photos"]:
-            taken = _photo_time(photo["taken_ms"], photo["offset"])
-            added = _photo_time(photo["added_ms"])
-            date = taken.date().isoformat() if taken else None
-            if date:
-                dates.append(date)
-            manifest.append({"src": photo["src"], "w": photo["w"], "h": photo["h"],
-                             "o": "p" if photo["h"] > photo["w"] else "l",
-                             "date": date, "takenAt": taken.isoformat() if taken else None,
-                             "addedAt": added.isoformat() if added else None,
-                             "place": label or fetched["name"] or "Shared album"})
+        dates = _append_album_photos(
+            manifest, fetched["photos"], label, fetched["name"], "Shared album")
         info.update(photoCount=len(fetched["photos"]), datedPhotoCount=len(dates),
                     oldestTaken=min(dates) if dates else None, newestTaken=max(dates) if dates else None)
+
+    for album in config.get("immichAlbums") or []:
+        if not isinstance(album, dict):
+            continue
+        label = str(album.get("name") or "")
+        server, album_id = immich_source(album) or ("", "")
+        info = _album_info("immich", server, label)
+        albums.append(info)
+        if not server or not album_id:
+            info.update(status="invalid-link", error="Not an Immich server and album link.")
+            log("Immich album skipped (unrecognized server or album)")
+            continue
+        api_key = str(album.get("apiKey") or "").strip()
+        if not api_key:
+            info.update(status="error", error="Immich API key is missing.")
+            log("Immich album skipped (no API key)")
+            continue
+        try:
+            fetched = immich_album_photos(server, api_key, album_id)
+        except Exception as e:
+            log("Immich album manifest failed (%s/%s): %r" % (server, album_id, e))
+            info.update(status="error",
+                        error="Could not read the Immich album. Check the server, API key and album, then run Sync Now.")
+            continue
+        info["name"] = fetched["name"]
+        dates = _append_album_photos(
+            manifest, fetched["photos"], label, fetched["name"], "Immich album")
+        info.update(photoCount=len(fetched["photos"]), datedPhotoCount=len(dates),
+                    oldestTaken=min(dates) if dates else None, newestTaken=max(dates) if dates else None)
+
     manifest.sort(key=lambda p: p["date"] or "", reverse=True)
     log("album manifest: %d photos" % len(manifest))
     return manifest, albums
@@ -967,7 +1292,9 @@ class ApiHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        path = self.path.rstrip("/")
+        parsed = urllib.parse.urlsplit(self.path)
+        path = parsed.path.rstrip("/")
+        query = urllib.parse.parse_qs(parsed.query)
         if path == "/api/frame":
             self._json(open(CACHE_PATH, "rb").read() if os.path.exists(CACHE_PATH) else b'{"ok": false}')
         elif path == "/api/shopping":
@@ -995,6 +1322,8 @@ class ApiHandler(BaseHTTPRequestHandler):
             self._tile(path)
         elif path.startswith(("/api/basemap/", "/api/boundaries/")):
             self._basemap(path)
+        elif path.startswith("/api/immich/photo/"):
+            self._immich_photo(path, query)
         else:
             self.send_response(404)
             self.end_headers()
@@ -1195,6 +1524,50 @@ class ApiHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "image/png")
         # Frames are immutable once published; the token changes every 5 min.
         self.send_header("Cache-Control", "public, max-age=600")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _immich_photo(self, path, query):
+        """Proxy one Immich thumbnail/preview.
+
+        The frame cannot send an Immich API key, so the bytes are fetched here
+        and served from this origin. Assets are immutable, so the response is
+        cached for a day.
+        """
+        match = re.fullmatch(
+            r"/api/immich/photo/([0-9a-fA-F-]{36})/([0-9a-fA-F-]{36})",
+            path,
+        )
+        if not match:
+            self.send_error(400)
+            return
+        album_id, asset_id = match.group(1).lower(), match.group(2).lower()
+        size = (query.get("size") or ["preview"])[0]
+        if size not in IMMICH_THUMB_SIZES:
+            self.send_error(400)
+            return
+        entry = None
+        for album in get_config().get("immichAlbums") or []:
+            source = immich_source(album)
+            if source and source[1] == album_id:
+                entry = album
+                break
+        if entry is None:
+            self.send_error(404)
+            return
+        server, _ = immich_source(entry)
+        api_key = str(entry.get("apiKey") or "").strip()
+        try:
+            body, content_type = immich_thumbnail(
+                server, api_key, asset_id, size)
+        except Exception as e:
+            log("Immich image proxy failed (%s/%s): %r" % (server, asset_id, e))
+            self.send_error(502)
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Cache-Control", "public, max-age=86400")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)

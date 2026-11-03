@@ -4,6 +4,10 @@ import { sdk } from '../sdk'
 // Read-only projection of the Python service's atomically published snapshot.
 // Never merge this model: the service owns the complete frame_cache.json file.
 const album = z.looseObject({
+  // Missing on caches written before Immich support; those entries are iCloud.
+  provider: z.enum(['icloud', 'immich']).catch('icloud'),
+  // Immich server base URL (informational). Empty for iCloud albums.
+  server: z.string().catch(''),
   configuredName: z.string().catch(''),
   name: z.string().catch(''),
   photoCount: z.number().catch(0),

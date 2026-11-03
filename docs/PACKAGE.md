@@ -38,14 +38,17 @@
 
 The image runs a Python service alongside nginx (one daemon; the entrypoint
 starts both). On every sync cycle it fetches the METADATA of the configured
-public iCloud shared albums (rendition URLs, dates — like
-iphoto-frame-saver, nothing is copied to this box), parses the configured
-ICS calendars, fetches the Open-Meteo forecast for the configured location,
-and writes an aggregated `/api/frame` document that nginx proxies. The
-dashboard polls it every minute and streams each photo straight from Apple's
-CDN. A successful response replaces the photo list, including an empty list;
-empty albums show a message rather than unrelated demo photos. Photo-list
-changes also discard the slideshow's old queue and previous-photo history.
+photo albums — public iCloud shared albums (rendition URLs, dates — like
+iphoto-frame-saver) and Immich albums (asset IDs, dates) — parses the
+configured ICS calendars, fetches the Open-Meteo forecast for the configured
+location, and writes an aggregated `/api/frame` document that nginx proxies.
+Nothing is copied to this box. The dashboard polls it every minute and
+streams each iCloud photo straight from Apple's CDN; Immich images are served
+by the box through `/api/immich/photo/<album>/<asset>?size=thumbnail|preview`
+because the frame cannot send an API key. A successful response replaces the
+photo list, including an empty list; empty albums show a message rather than
+unrelated demo photos. Photo-list changes also discard the slideshow's old
+queue and previous-photo history.
 Configure albums, calendars, location and units through **Actions & Config**
 (**Sync Now**, **Edit Location & Units**, **Edit Calendars**, **Edit Users**,
 **Edit Photos & Albums**, **Photo Album Info**, **Edit Sidebar**,
@@ -54,8 +57,9 @@ Configure albums, calendars, location and units through **Actions & Config**
 actions in a `BTreeMap<ActionId, ActionMetadata>` and the Actions page sorts
 them by id, so each action id carries a numeric prefix (`01-sync-now` …
 `11-edit-vestaboard`); registration order in `actions/index.ts` is cosmetic. The service detects saved config changes within ten seconds
-and starts a new sync; no restart is needed. Calendar links and shared-album
-links remain on the server; only photo rendition URLs reach the frame.
+and starts a new sync; no restart is needed. Calendar links, shared-album
+links and the Immich API key remain on the server; only photo rendition URLs
+and relative Immich proxy paths reach the frame.
 
 The API includes the resolved IANA `timezone`. The dashboard uses real time
 and `@date-fns/tz` dates for clock display, event times, day boundaries and
@@ -82,29 +86,58 @@ no longer leaves an empty sixth row. This month layout is adapted from
 project.
 
 **Edit Photos & Albums** shows a read-only **Album name** per row, taken from
-`frame_cache.json`'s `photoAlbums[i].name` (the name Apple reports). It is
-informational only and is not written back to `config.json`.
+`frame_cache.json`'s `photoAlbums` entries. The cache emits iCloud albums first
+then Immich albums, each with a `provider` field (`icloud` or `immich`), so the
+form's two lists align with their own config arrays. Album names are
+informational only and are not written back to `config.json`.
 
-Both modern `photos.icloud.com/shared/album/<token>/` links and legacy
+iCloud albums live in `config.albums` (`url`, `name`). Both modern
+`photos.icloud.com/shared/album/<token>/` links and legacy
 `www.icloud.com/sharedalbum/#<token>` links are supported, including
 `icloud.com.cn`. Legacy image resources are requested in batches of 100
-photo IDs. Sync uses metadata only; no album images are stored on disk.
+photo IDs.
 
-Photo captions use Apple's capture timestamp (`assetDate`, with
-`originalCreationDate` as the modern fallback; legacy `dateCreated`).
+Immich albums live in `config.immichAlbums` (`server`, `apiKey`, `albumId`,
+`name`). The action accepts an album page link or bare UUID and stores the
+UUID. `immich_source()` derives the server from a full album link when the
+server field is blank, allowing either field order. Sync calls
+`GET /api/albums/<id>?withoutAssets=false` with the `x-api-key` header. When a
+newer Immich version omits the `assets` array, sync calls
+`POST /api/search/metadata` with `filter.albumIds.all` and pages with
+`nextCursor`. Older servers that reject that body with 400/422 are retried
+with the deprecated top-level `albumIds` array and page numbers. Videos,
+trashed assets and malformed IDs are skipped. The service accepts Immich API keys with
+`album.read`, `asset.view` and `asset.read` (the last for album asset search
+on newer Immich); the key stays in `config.json` and is never placed in
+`frame_cache.json`. `immich_ssl_context()` disables certificate
+verification only for `https` servers on `.local`, `localhost` or private IPv4
+addresses, matching the IPPS printer precedent and covering self-signed
+StartOS/UmbrelOS endpoints. Public hostnames keep normal verification.
+
+Sync uses metadata only; no album images are stored on disk. The frame gets
+relative proxy paths for Immich (`/api/immich/photo/...`) and Apple CDN URLs
+for iCloud. The Immich proxy adds the API key server-side and returns
+`thumbnail`/`preview` bytes with a one-day public cache; assets are immutable.
+Only those sizes are accepted, so a frame cannot request originals.
+
+Photo captions use the capture timestamp. iCloud uses `assetDate` with
+`originalCreationDate` as the modern fallback and legacy `dateCreated`. Immich
+uses `localDateTime` first because it preserves the photographer's local
+calendar date, then EXIF `dateTimeOriginal`, then `fileCreatedAt` (both UTC).
 The photo's timezone offset preserves its original calendar date when
-available; UTC is used otherwise. `takenAt` and `date` are null when Apple
-does not supply a valid capture date. Album-added time stays separate as
-`addedAt` and is never substituted for capture time or today's date.
-Unknown dates display **Date taken unavailable**; same-day anniversaries
-only apply to earlier years, never “0 years ago today.”
+available; UTC is used otherwise. `takenAt` and `date` are null when the provider does
+not supply a valid capture date. Album-added time stays separate as `addedAt`
+and is never substituted for capture time or today's date. Unknown dates
+display **Date taken unavailable**; same-day anniversaries only apply to
+earlier years, never “0 years ago today.”
 
 **Photo Album Info** in Actions & Config displays album names and photo
-counts in its description. Open it for Apple's actual album title, the
-configured dashboard label, photo count, capture-date coverage/range, sync
-status and the last completed sync timestamp. This is a read-only snapshot;
-reopen after Sync Now for fresh information. Album failures appear in the
-snapshot without exposing private shared-album URLs or tokens.
+counts in its description. Open it for each album's source (iCloud or Immich
+server), provider title, configured dashboard label, photo count,
+capture-date coverage/range, sync status and the last completed sync
+timestamp. This is a read-only snapshot; reopen after Sync Now for fresh
+information. Album failures appear in the snapshot without exposing private
+shared-album URLs, Immich API keys or album tokens.
 
 The photo controls are previous/next and layout selection. There is no
 Favourite control or favourite-based repetition; every photo in the shared

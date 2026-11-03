@@ -16,9 +16,10 @@ full-screen Android photo frame, served from your own StartOS server.
   files. LAN addresses (the server's `.local` hostname and LAN IP) are enabled
   by default and require **no login** — this is what the frame uses.
 - The **Photos** section and screensaver stream from your configured public
-  iCloud shared albums: the box refreshes the album metadata on its sync
-  interval, and the frame loads each image straight from Apple's CDN. Nothing
-  is copied to this box.
+  iCloud shared albums and Immich albums: the box refreshes album metadata on
+  its sync interval. iCloud images load straight from Apple's CDN; Immich
+  images are fetched by the box and served through it, so the frame never
+  contacts your Immich server. Nothing is copied to this box.
 - Everything else is local: no accounts, no database, and the only other
   client-side resources are Google Fonts (everything else is served by this
   box).
@@ -248,32 +249,69 @@ has detailed steps, including the exact Mac `dns-sd` commands to obtain the
 service's hostname, port, `rp` path and numeric IP. Run those commands on your
 Mac, not in the StartOS container. They inspect the printer without printing.
 
-## Set up your iCloud photos
+## Set up your photos
+
+**Edit Photos & Albums** has two lists: **Albums** for public iCloud shared
+albums and **Immich albums** for albums on an Immich server. Add rows to
+either or both.
+
+### iCloud shared albums
 
 1. Use a **public shared album** in Apple Photos. A private Shared Photo
    Library or an invitation-only album is not a public album link; enable
    the album's public website/link-sharing option first.
 2. In StartOS, open **Frame Dashboard → Actions & Config → Edit Photos &
-   Albums**. Add the public album link and an optional name; the row also shows
-   the shared album name Apple reports from the last sync, then submit.
+   Albums**. Add the public album link and an optional name to the **Albums**
+   list; the row also shows the shared album name Apple reports from the last
+   sync, then submit.
    Supported links are `https://photos.icloud.com/shared/album/<token>/`
    and `https://www.icloud.com/sharedalbum/#<token>` (including China domains).
 3. Run **Sync Now**. Once Apple responds, the dashboard picks up the photo
    list on its next one-minute refresh. Photos stream directly from Apple;
    you do not need to copy files or enter your Apple account password.
-4. If no photos are available, the photo area shows a message instead of
-   demo pictures. Check that the link opens without signing in and that the
-   shared album contains photos. Check **Logs** in StartOS for sync errors.
-5. **Photo Album Info** in Actions & Config shows the synced album name and
-   photo count. Open it for the actual Apple album name, your dashboard
-   label, capture-date availability, oldest/newest capture dates, sync status
-   and last-sync time. Reopen it after **Sync Now** to see updated details.
+
+### Immich albums
+
+1. In Immich, open **Account Settings → API Keys** and create a key with
+   `album.read`, `asset.view` and `asset.read` permissions (`asset.read` is
+   used for album asset search on newer Immich). Copy it.
+2. Find the album's page link in Immich. It looks like
+   `https://your-immich/albums/<album-id>`, or you can use the album ID on its
+   own.
+3. In **Edit Photos & Albums**, add a row to **Immich albums**:
+   - **Immich server URL**: the base address, such as
+     `http://192.168.1.50:2283`. For Immich on StartOS or UmbrelOS, use that
+     device's LAN address and published port. A reverse-proxy subpath such as
+     `https://example.com/immich` is allowed. If you paste a full album link
+     and leave the server blank, the box derives the server from the link.
+     HTTPS on a `.local` hostname or private IP accepts a self-signed
+     certificate; a public hostname needs a valid certificate.
+   - **Immich API key**: the key from step 1. It stays on this StartOS box and
+     is never sent to the frame. Leave the field blank when reopening the form
+     to keep the saved key.
+   - **Immich album link or ID**: the album page link or album ID.
+   - **Name**: an optional label shown in photo captions.
+4. Run **Sync Now**. The box reads album metadata and serves every image
+   through its own address; the frame does not connect to Immich directly.
+   Videos and trashed assets are skipped.
+
+### Both providers
+
+If no photos are available, the photo area shows a message instead of demo
+pictures. Check that the album contains photos and that the iCloud link opens
+without signing in, or that the Immich key can read the album. Check **Logs**
+in StartOS for sync errors.
+
+**Photo Album Info** in Actions & Config shows each album's source, synced
+name and photo count. Open it for the provider album name, your dashboard
+label, capture-date availability, oldest/newest capture dates, sync status
+and last-sync time. Reopen it after **Sync Now** to see updated details.
 
 Photo captions show **when each photo was taken**, not when you added it to
-the album. If Apple does not expose that date, the caption says **Date taken
-unavailable** instead of guessing. The photo's own timezone is used when
-available. All photos in the shared album are included; there is no Favourite
-button or extra favourite weighting.
+the album. If the provider does not expose that date, the caption says
+**Date taken unavailable** instead of guessing. The photo's own timezone is
+used when available. All photos in the album are included; there is no
+Favourite button or extra favourite weighting.
 
 After installing a package update, reload the dashboard on the frame once
 to load the updated application. Your saved album settings are retained.

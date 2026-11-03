@@ -175,7 +175,7 @@
     var s = this.pick();
     if (!s) {
       this.current = null;
-      this.el.innerHTML = '<div class="slide slide--empty"><div><h2 class="serif">No photos available</h2><p>Check your public shared album and run Sync Now in StartOS.</p></div></div>';
+      this.el.innerHTML = '<div class="slide slide--empty"><div><h2 class="serif">No photos available</h2><p>Check your iCloud or Immich albums and run Sync Now in StartOS.</p></div></div>';
       if (this.o.onChange) this.o.onChange(null);
       this.restart();
       return;

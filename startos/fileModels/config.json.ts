@@ -19,6 +19,18 @@ const albumShape = z.object({
   name: z.string().catch(''),
 })
 
+const immichAlbumShape = z.object({
+  // Base URL of the Immich server, e.g. http://192.168.1.50:2283. A reverse
+  // proxy subpath is allowed. The service appends /api/... to this value.
+  server: z.string().catch(''),
+  // Immich API key (Account Settings -> API Keys). Needs album.read and
+  // asset.view. Stays on this box; the frame only receives proxy URLs.
+  apiKey: z.string().catch(''),
+  // Album UUID. The action accepts an album page link and stores the UUID.
+  albumId: z.string().catch(''),
+  name: z.string().catch(''),
+})
+
 const calendarShape = z.object({
   name: z.string().catch(''),
   // Read-only public ICS link. Events from this calendar render in this color.
@@ -84,6 +96,8 @@ const shape = z.looseObject({
     })
     .catch(() => ({ dim: true, red: false })),
   albums: z.array(albumShape).catch([]),
+  // Immich albums, fetched with an API key and proxied through this box.
+  immichAlbums: z.array(immichAlbumShape).catch([]),
   calendars: z.array(calendarShape).catch([]),
   // Sidebar order and visibility. Today is always first; absent means the
   // built-in order with every section shown except the opt-in Meals and School.

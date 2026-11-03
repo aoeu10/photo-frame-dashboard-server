@@ -3,6 +3,19 @@
 Package versions follow StartOS's `<version>:<revision>` format. Each versioned
 entry is the release note shipped with that package version.
 
+## 1.2.75 — 2026-11-03
+
+**Immich photo albums.** Edit Photos & Albums now has an **Immich albums**
+list alongside the existing iCloud shared albums. Each Immich row takes the
+server base URL (LAN address or reverse-proxy subpath), an API key with
+`album.read`, `asset.view` and `asset.read`, an album page link or album ID,
+and an optional
+label. The box reads album metadata on the sync interval, skips videos and
+trashed assets, and serves every image through `/api/immich/photo/...`; the
+frame never contacts Immich directly and the API key stays on the box.
+Photo Album Info now shows each album's source (iCloud or Immich) and server.
+iCloud album behaviour is unchanged.
+
 ## 1.2.74 — 2026-11-01
 
 **Sidebar order.** Photos now sits directly below Calendar in the rail, ahead of Meals and School.

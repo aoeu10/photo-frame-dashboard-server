@@ -362,10 +362,11 @@ not a real household credential.
 - **Groceries.** Tap items from your catalog to build a list grouped by
   category and store. Print the open items to a printer connected on the local network. Store
   lists are printed side-by-side, with each quantity beside its item.
-- **Photos.** Photo album integration currently supports **iCloud shared
-  albums only**. A full-screen slideshow displays them in five layouts;
-  photos stream from Apple and the box stores only metadata. Support for
-  additional photo album providers is planned.
+- **Photos.** Integrates **iCloud shared albums** and **Immich albums**. A
+  full-screen slideshow displays them in five layouts. iCloud photos stream
+  from Apple's CDN; Immich photos are fetched by the box and served through
+  it, so the frame never contacts your Immich server and the API key stays on
+  the box. Sync stores metadata only.
 - **Vestaboard.** A rail view for drawing directly on a Flagship (6×22) or
   Note (3×15) board, with a VBML template preview and send button. StartOS
   proxies the Local API, so the board key never reaches the frame.
@@ -508,8 +509,8 @@ choice.
 | Edit Location & Units | ZIP or coordinates, time zone, temperature unit, night display |
 | Edit Calendars | ICS links, colours, assigned user, Today visibility, school or meal |
 | Edit Users | People, colours, calendars, personal-page cards |
-| Edit Photos & Albums | Public iCloud shared album links and labels |
-| Photo Album Info | Album names, counts, capture dates and last sync |
+| Edit Photos & Albums | iCloud shared album links plus Immich server, API key and album |
+| Photo Album Info | Album sources, names, counts, capture dates and last sync |
 | Edit Sidebar | Show or hide rail sections |
 | Edit Groceries | Categories, item rows, stores and usual-item toggles |
 | Edit Chores | Chore rows with emoji, routine, star value and user-or-Anyone assignment |
@@ -521,12 +522,14 @@ numeric prefixes because StartOS sorts actions by id.
 
 ### Edit Photos & Albums
 
-Currently, **only iCloud shared albums are supported**; integration with
-additional photo album providers is planned.
+Two album lists are available: **Albums** for public iCloud shared albums and
+**Immich albums** for albums on an Immich server. Each row has an optional
+label and a read-only **Album name** taken from the last sync, so the list
+shows which album each row points to.
 
-Add one row per public iCloud shared album. Each row has the album link, an
-optional label, and a read-only **Album name** taken from the last sync so the
-list shows which shared album each link points to.
+#### iCloud shared albums
+
+Add one row per public iCloud shared album.
 
 - Both modern `photos.icloud.com/shared/album/<token>/` and legacy
   `www.icloud.com/sharedalbum/#<token>` links work, including `icloud.com.cn`.
@@ -536,11 +539,38 @@ list shows which shared album each link points to.
 - Captions use Apple's capture timestamp. A missing capture date says
   **Date taken unavailable** rather than guessing.
 
+#### Immich albums
+
+Add one row per Immich album:
+
+- **Immich server URL** — the base URL, for example
+  `http://192.168.1.50:2283`. A reverse-proxy subpath such as
+  `https://example.com/immich` is allowed. Immich on StartOS or UmbrelOS uses
+  that device's LAN address and published port.
+- **Immich API key** — create one in Immich under **Account Settings → API
+  Keys** with `album.read`, `asset.view` and `asset.read` permissions
+  (`asset.read` is used for album asset search on newer Immich). The key stays
+  on the StartOS box; the frame never receives it. Leave the field blank to
+  keep the saved key.
+- **Immich album link or ID** — paste the album page link
+  (`https://your-immich/albums/<id>`) or the album ID itself. If the server
+  field is blank, the box derives the server from a full album link.
+
+HTTPS on a `.local` hostname or private IP accepts a self-signed certificate,
+which covers services exposed by StartOS or UmbrelOS; a public hostname needs
+a valid certificate.
+
+The box reads album metadata on its sync interval and serves every Immich
+image through its own `/api/immich/photo/...` endpoint, adding the API key on
+the server side. The frame therefore only talks to the StartOS box, and
+Android 6 frames do not need to negotiate TLS with the Immich server directly.
+Images are not copied to disk.
+
 ### Photo Album Info
 
-A read-only summary of each configured album: its name, photo count,
-capture-date coverage, sync status and the last completed sync. Run **Sync
-Now**, then reopen this action for the newest values.
+A read-only summary of each configured album: its source (iCloud or Immich),
+name, photo count, capture-date coverage, sync status and the last completed
+sync. Run **Sync Now**, then reopen this action for the newest values.
 
 ### Edit Calendars
 
@@ -867,8 +897,16 @@ use needs only the settings above.
 
 ### Photos
 
-- Sync stores metadata only. The frame streams images from Apple's CDN.
-- Captions use Apple's capture timestamp, not the date the photo was added.
+- Sync stores metadata only. iCloud images stream from Apple's CDN; Immich
+  images are proxied by the box because the frame cannot send an API key.
+- The Immich API key stays in `config.json` on the box. Album manifests contain
+  only relative `/api/immich/photo/<album>/<asset>?size=...` paths.
+- Immich thumbnails and previews are cached by the frame for a day; assets are
+  immutable, so no revalidation is needed.
+- Captions use the photo's capture timestamp, not the date it was added.
+  Immich uses `localDateTime` first (it preserves the photographer's local
+  calendar date), then EXIF `dateTimeOriginal`, then `fileCreatedAt`; videos
+  and trashed assets are skipped.
 
 ### Frame resilience
 
